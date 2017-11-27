@@ -1,6 +1,6 @@
 # it_works
 
-This is testing/demo application. 
+This is a testing/demo application. 
 
 Included are:
 
@@ -12,3 +12,17 @@ Included are:
 
 The Habiat package is built without compiling the actual source code.
 We just package the binary from `artifacts` to stay build dependency free.
+
+```
+vagrant up
+sudo su -
+cd /src
+make hab-build
+```
+
+To generate a k8s deployment that can be run with [habitat-operator](https://github.com/kinvolk/habitat-operator):
+
+```
+# saves to manifest.yaml
+make hab-export
+```
