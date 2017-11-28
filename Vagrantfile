@@ -24,8 +24,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", privileged: true,  inline: "dnf install -y git go"
   config.vm.provision "shell", inline: "mkdir -p /home/vagrant/go ; chown -R vagrant:vagrant /home/vagrant/go"
 
-  config.vm.provision "shell", privileged: true, inline: "curl -sL 'https://api.bintray.com/content/habitat/stable/linux/x86_64/hab-%24latest-x86_64-linux.tar.gz?bt_package=hab-x86_64-linux' | tar xvzf - -C /usr/local/bin --strip=1
-"
+  config.vm.provision "shell", privileged: true, inline: "curl -sL 'https://api.bintray.com/content/habitat/stable/linux/x86_64/hab-%24latest-x86_64-linux.tar.gz?bt_package=hab-x86_64-linux' | tar xvzf - -C /usr/bin --strip=1"
 
   config.vm.synced_folder ".", "/src", type: "rsync"
   config.vm.synced_folder "~/.hab/cache/keys", "/hab/cache/keys", type: "rsync"
