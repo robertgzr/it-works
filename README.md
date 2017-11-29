@@ -1,4 +1,4 @@
-# it_works
+# it-works
 
 This is a testing/demo application. 
 
