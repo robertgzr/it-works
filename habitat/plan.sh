@@ -1,6 +1,6 @@
 pkg_name=it-works
 pkg_origin=robertgzr
-pkg_version="0.2.1"
+pkg_version="0.2.2"
 pkg_license=('MIT')
 pkg_maintainer="Robert Günzler <robertguenzler@kinvolk.io>"
 pkg_upstream_url=https://github.com/robertgzr/it-works
