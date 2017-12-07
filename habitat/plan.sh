@@ -6,7 +6,7 @@ pkg_maintainer="Robert Günzler <robertguenzler@kinvolk.io>"
 pkg_upstream_url=https://github.com/robertgzr/it-works
 pkg_bin_dirs=(bin)
 
-pkg_svc_run="it-works"
+pkg_svc_run="it-works -port 8080 -msg 'hello from habitat'"
 pkg_svc_user=hab
 
 do_build() {
