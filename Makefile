@@ -1,12 +1,9 @@
-GOOS := linux
-GOARCH := amd64
-
+GOOS=linux
+GOARCH=amd64
 all: go hab
 
 go:
-	sh -c "cd src/ && GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 \
-		go build -ldflags '-extldflags \"-static\"' \
-		-o ../artifacts/it-works_$(GOOS)_$(GOARCH)"
+	GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 go build -i --ldflags="-s" -o artifacts/it-works_$(GOOS)_$(GOARCH) ./src
 
 hab: hab-build hab-upload hab-export
 hab-build:
