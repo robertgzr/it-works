@@ -1,0 +1,19 @@
+# This dockerfile can be used to build aarch64 artifacts
+# from x86_64 host machines:
+# usage: docker run <this> make go
+
+FROM balenalib/aarch64-alpine-golang
+
+# Enable QEMU emulation
+ENTRYPOINT [ "qemu-aarch64-static", "-execve", "/bin/ash", "-c" ]
+SHELL      [ "qemu-aarch64-static", "-execve", "/bin/ash", "-c" ]
+
+ENV GOARCH arm64
+
+RUN apk --no-cache add -U \
+        git \
+        make
+
+COPY . /src
+
+WORKDIR /src
