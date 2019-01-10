@@ -1,0 +1,25 @@
+ARG goos
+ARG goarch
+ARG goarg
+
+FROM alpine as builder
+
+RUN apk add -U ca-certificates
+
+FROM scratch
+
+ENV GOOS=${goos:-linux}
+ENV GOARCH=${goarch:-amd64}
+ENV GOARM=${goarm:-}
+
+COPY artifacts/it-works_${GOOS}_${GOARCH}${GOARM} \
+     /bin/it-works
+COPY --from=builder \
+    /etc/ssl/certs/ca-certificates.crt \
+    /etc/ssl/certs/ca-certificates.crt
+
+EXPOSE 80
+
+WORKDIR "/"
+ENTRYPOINT ["/bin/it-works"]
+CMD ["-port", "80", "-msg", "it works :)"]
