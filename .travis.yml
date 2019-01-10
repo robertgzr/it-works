@@ -1,0 +1,45 @@
+language: go
+go:
+  - 1.10.4
+  - 1.11.4
+  - tip
+
+matrix:
+  allow_failures:
+    - go: tip
+
+sudo: required
+services:
+  - docker
+
+script:
+  - echo "Building for amd64"
+  - docker build -t dev:amd64 -f Dockerfile .
+  - docker run --rm -it -v $(pwd):/src dev:amd64 make go
+
+  - echo "Building for armv7hf"
+  - docker build -t dev:armv7hf -f Dockerfile.build.armv7hf .
+  - docker run --rm -it -v $(pwd):/src dev:armv7hf make go
+
+  - echo "Building for aarch64"
+  - docker build -t dev:aarch64 -f Dockerfile.build.aarch64 .
+  - docker run --rm -it -v $(pwd):/src dev:aarch64 make go
+
+deploy:
+  on:
+    branch: master
+  provider: script
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+    - echo "Building container images"
+    - docker build -t robertgzr/it-works:amd64 -f Dockerfile.deploy .
+    - docker build --build-arg goarch=arm --build-arg goarm=7 -t robertgzr/it-works:armv7hf -f Dockerfile.deploy .
+    - docker build --build-arg goarch=arm64 -t robertgzr/it-works:aarch64 -f Dockerfile.deploy .
+    - docker tag robertgzr/it-works:arm64 robertgzr/it-works:latest
+
+    - echo "Pushing images to dockerhub"
+    - docker push robertgzr/it-works:amd64
+    - docker push robertgzr/it-works:armv7hf
+    - docker push robertgzr/it-works:aarch64
+    - docker push robertgzr/it-works:latest
