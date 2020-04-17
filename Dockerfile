@@ -1,9 +1,34 @@
-FROM golang:alpine AS builder
+# syntax=docker/dockerfile:1.1-experimental
+# vim: ft=dockerfile
 
-RUN apk --no-cache add -U \
-        git \
-        make
+FROM --platform=$BUILDPLATFORM alpine AS base
 
-COPY . /src
+ARG MAINTAINER="robertgzr <r@gnzler.io>"
+LABEL \
+        maintainer=$MAINTAINER \
+        org.opencontainers.image.authors=$MAINTAINER \
+        org.opencontainers.image.title="it-works" \
+        org.opencontainers.image.source="https://github.com/robertgzr/it-works"
 
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:golang AS xgo
+FROM --platform=$BUILDPLATFORM golang:alpine AS gobuild
+COPY --from=xgo / /
+ARG TARGETPLATFORM
 WORKDIR /src
+RUN --mount=target=. \
+    --mount=target=/go/pkg,type=cache \
+    --mount=target=/root/.cache,type=cache \
+    CGO_ENABLED=0 \
+    go build \
+        -tags "netgo osusergo static_build" \
+        -ldflags "-s -w -extldflags -static" \
+        -o /out/it-works-$(echo $TARGETPLATFORM | sed 's/\//-/g') \
+        ./src
+
+FROM base AS it-works
+COPY --from=gobuild /out/* /usr/local/bin/
+RUN apk add --update-cache --no-cache ca-certificates
+EXPOSE 80
+WORKDIR "/"
+ENTRYPOINT ["/bin/it-works"]
+CMD ["-port", "80"]

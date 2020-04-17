@@ -1,7 +1,5 @@
-all: go
 
-go:
-	CGO_ENABLED=0 go build -i --ldflags="-s" -o artifacts/it-works_$(shell go env GOOS)_$(shell go env GOARCH)$(shell go env GOARM) ./src
+it-works:
+	DOCKER_BUILDKIT=1 \
+	$(DOCKER) build --platform=linux/amd64 --target=it-works --tag robertgzr/it-works .
 
-clean:
-	git clean -fdx
