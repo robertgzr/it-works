@@ -32,3 +32,10 @@ EXPOSE 80
 WORKDIR "/"
 ENTRYPOINT ["/bin/it-works"]
 CMD ["-port", "80"]
+
+
+FROM base AS idle
+RUN apk add --update-cache --no-cache stress-ng
+ENV STRESS=0
+COPY ./start.sh /usr/local/bin/
+CMD ["start.sh"]
