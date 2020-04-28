@@ -1,15 +1,6 @@
 # syntax=docker/dockerfile:1.1-experimental
 # vim: ft=dockerfile
 
-FROM --platform=$BUILDPLATFORM alpine AS base
-
-ARG MAINTAINER="robertgzr <r@gnzler.io>"
-LABEL \
-        maintainer=$MAINTAINER \
-        org.opencontainers.image.authors=$MAINTAINER \
-        org.opencontainers.image.title="it-works" \
-        org.opencontainers.image.source="https://github.com/robertgzr/it-works"
-
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:golang AS xgo
 FROM --platform=$BUILDPLATFORM golang:alpine AS gobuild
 COPY --from=xgo / /
@@ -25,14 +16,21 @@ RUN --mount=target=. \
         -o /out/it-works-$(echo $TARGETPLATFORM | sed 's/\//-/g') \
         ./src
 
+FROM --platform=$TARGETPLATFORM alpine AS base
+
+ARG MAINTAINER="robertgzr <r@gnzler.io>"
+LABEL \
+        maintainer=$MAINTAINER \
+        org.opencontainers.image.authors=$MAINTAINER \
+        org.opencontainers.image.title="it-works" \
+        org.opencontainers.image.source="https://github.com/robertgzr/it-works"
+
 FROM base AS it-works
-COPY --from=gobuild /out/* /usr/local/bin/
+COPY --from=gobuild /out/it-works-$(echo $TARGETPLATFORM | sed 's/\//-/g') /usr/local/bin/it-works
 RUN apk add --update-cache --no-cache ca-certificates
 EXPOSE 80
-WORKDIR "/"
-ENTRYPOINT ["/bin/it-works"]
+ENTRYPOINT ["it-works"]
 CMD ["-port", "80"]
-
 
 FROM base AS idle
 RUN apk add --update-cache --no-cache stress-ng
