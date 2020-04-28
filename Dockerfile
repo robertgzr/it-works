@@ -22,10 +22,10 @@ ARG MAINTAINER="robertgzr <r@gnzler.io>"
 LABEL \
         maintainer=$MAINTAINER \
         org.opencontainers.image.authors=$MAINTAINER \
-        org.opencontainers.image.title="it-works" \
         org.opencontainers.image.source="https://github.com/robertgzr/it-works"
 
 FROM base AS it-works
+LABEL org.opencontainers.image.title="it-works"
 COPY --from=gobuild /out/it-works-$(echo $TARGETPLATFORM | sed 's/\//-/g') /usr/local/bin/it-works
 RUN apk add --update-cache --no-cache ca-certificates
 EXPOSE 80
@@ -33,6 +33,7 @@ ENTRYPOINT ["it-works"]
 CMD ["-port", "80"]
 
 FROM base AS idle
+LABEL org.opencontainers.image.title="idle"
 RUN apk add --update-cache --no-cache stress-ng
 ENV \
     STRESS_ENABLED="false" \
