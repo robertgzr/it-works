@@ -2,6 +2,5 @@
 # vim: ft=dockerfile
 FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine:3.11-run
 RUN apk add --update-cache --no-cache stress-ng
-ENV STRESS_ENABLED=false
 COPY ./idle/start.sh /usr/local/bin/
 CMD ["start.sh"]

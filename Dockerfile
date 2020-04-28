@@ -34,6 +34,10 @@ CMD ["-port", "80"]
 
 FROM base AS idle
 RUN apk add --update-cache --no-cache stress-ng
-ENV STRESS_ENABLED=false
+ENV \
+    STRESS_ENABLED="false" \
+    STRESS_ARGS="--cpu=2 --vm=2 --io=2 --tz" \
+    STRESS_TIMEOUT="30s" \
+    IDLE_INTERVAL="5m"
 COPY ./idle/start.sh /usr/local/bin/
 CMD ["start.sh"]
