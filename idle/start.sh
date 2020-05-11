@@ -2,7 +2,7 @@
 set -e
 
 while true ; do
-    if [ "$STRESS_ENABLED" = true ]; then
+    if [ -n "$STRESS_ENABLED" ]; then
         timeout="${STRESS_TIMEOUT:-30s}"
         echo "Stressing for ${timeout}..."
         stress-ng --timeout "${timeout}" ${STRESS_ARGS}
