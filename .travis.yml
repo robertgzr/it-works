@@ -33,7 +33,7 @@ script: |
     --opt filename=Dockerfile \
     --opt platform=$PLATFORMS \
     --opt target=idle \
-    --output type=image,name=docker.io/robertgzr/idle:latest,push=true
+    --output type=image,name=docker.io/robertgzr/it-works:idle,push=true
 
 after_failure:
   - buildctl debug workers ls
