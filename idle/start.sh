@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+trap '{ echo "==> SIGTERM, exiting"; exit 0; }' TERM
+
 while true ; do
     if [ -n "$STRESS_ENABLED" ]; then
         timeout="${STRESS_TIMEOUT:-30s}"
