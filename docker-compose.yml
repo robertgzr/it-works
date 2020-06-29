@@ -3,7 +3,7 @@ version: '2'
 services:
   idle:
     build:
-      context: .
+      context: ./idle
     environment:
       - 'STRESS_ENABLED=false'
       - 'STRESS_TIMEOUT=30s'
