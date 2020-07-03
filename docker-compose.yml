@@ -5,7 +5,7 @@ services:
     build:
       context: ./idle
     environment:
-      - 'STRESS_ENABLED=false'
+      - 'STRESS_ENABLED=0'
       - 'STRESS_TIMEOUT=30s'
       - 'STRESS_ARGS=--cpu=2 --vm=2 --io=2 --tz'
       - 'IDLE_INTERVAL=5m'
