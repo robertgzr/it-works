@@ -8,4 +8,8 @@ services:
       - 'STRESS_ENABLED=0'
       - 'STRESS_TIMEOUT=30s'
       - 'STRESS_ARGS=--cpu=2 --vm=2 --io=2 --tz'
-      - 'IDLE_INTERVAL=5m'
+      - 'IDLE_INTERVAL=30s'
+    volumes:
+      - data:/data
+volumes:
+  data:
