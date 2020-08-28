@@ -1,11 +1,32 @@
 # for balenaCloud
 version: '3'
 services:
-  idle:
+  idle_10s:
     build:
       context: ./idle
+    image: robertgzr/idle
+    environment:
+      - 'STRESS_ENABLED=0'
+      - 'STRESS_TIMEOUT=30s'
+      - 'STRESS_ARGS=--cpu=2 --vm=2 --io=2 --tz'
+      - 'IDLE_INTERVAL=10s'
+
+  idle_5m:
+    build:
+      context: ./idle
+    image: robertgzr/idle
     environment:
       - 'STRESS_ENABLED=0'
       - 'STRESS_TIMEOUT=30s'
       - 'STRESS_ARGS=--cpu=2 --vm=2 --io=2 --tz'
       - 'IDLE_INTERVAL=5m'
+
+  stress_60s:
+    build:
+      context: ./idle
+    image: robertgzr/idle
+    environment:
+      - 'STRESS_ENABLED=1'
+      - 'STRESS_TIMEOUT=60s'
+      - 'STRESS_ARGS=--cpu=2 --vm=2 --io=2 --tz'
+      - 'IDLE_INTERVAL=10s'
