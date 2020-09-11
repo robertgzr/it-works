@@ -1,3 +1,4 @@
+DOCKER ?= docker
 
 it-works:
 	DOCKER_BUILDKIT=1 \
