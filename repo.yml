@@ -1,2 +1,16 @@
+# force a stack pack
+# stack: go-module
+
+build:
+  cmd: it-works
+  deps:
+    - build-base
+
+deploy:
+  # can be inferred from build.cmd?
+  cmd: it-works
+  deps:
+    - ca-certificates
+
 release:
   push:
