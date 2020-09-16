@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  it-works:
+    build:
+      context: .
+      args:
+      - BUILD_BIN=it-works
+      - BUILD_DEPS=build-base
+      - DEPLOY_DEPS=ca-certificates
+      - DEPLOY_CMD=it-works
+    image: docker.io/robertgzr/it-works

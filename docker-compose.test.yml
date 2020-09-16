@@ -1,0 +1,11 @@
+
+sut:
+  build:
+    context: .
+    target: test
+    args:
+      - BUILD_BIN=it-works
+      - BUILD_DEPS=build-base
+
+pause:
+  image: docker.io/rancher/pause:3.2
