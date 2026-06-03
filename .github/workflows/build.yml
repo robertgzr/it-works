@@ -1,0 +1,38 @@
+name: build
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+env: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:latest
+    steps:
+    - name: Install build dependencies
+      run: |
+        apt-get update
+        apt-get install -y make golang
+
+    - uses: actions/checkout@v4
+      with:
+        submodules: false
+
+    - name: Build
+      run: |
+        go build -o it-works ./src/main.go
+    # - name: Upload artifacts
+    #   continue-on-error: true
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: ${{ env.ARTIFACT_NAME }}
+    #     path: ${{ env.ARTIFACT_PATH }}
+    #     retention-days: 2
+    #     overwrite: true
